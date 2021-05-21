@@ -1,18 +1,20 @@
-sudo: false
 language: node_js
+os: linux
+dist: xenial
 node_js:
-  - 12 # use nodejs v12 LTS
+  - 16
 cache: npm
 branches:
   only:
-    - main # build master branch only
+    - main
 script:
-  - hexo generate # generate static files
+  - hexo generate
 deploy:
   provider: pages
-  skip-cleanup: true
-  github-token: $GH_TOKEN
-  keep-history: true
+  strategy: git
+  cleanup: false
+  token: $GH_TOKEN
+  keep_history: true
   on:
     branch: main
-  local-dir: public
+  local_dir: public
