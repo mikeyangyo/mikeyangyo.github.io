@@ -14,9 +14,3 @@ FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 
 # [Optional] Uncomment if you want to install more global node modules
 RUN su node -c "npm install -g hexo-cli"
-
-# git alias config
-RUN git config --global alias.co checkout
-RUN git config --global alias.ci commit
-RUN git config --global alias.st status
-RUN git config --global alias.br branch
