@@ -236,7 +236,7 @@ deploy:
     # Does git push over HTTPS
     strategy: git
     # keep builded pages
-    cleanup: false
+    skip_cleanup: true
     # token created from github,
     # and read from environment variable defined in Travis CI config, named GH_TOKEN
     token: $GH_TOKEN
