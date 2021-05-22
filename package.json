@@ -24,7 +24,8 @@
     "hexo-theme-landscape": "^0.0.3"
   },
   "devDependencies": {
-    "cz-conventional-changelog": "^3.3.0"
+    "cz-conventional-changelog": "^3.3.0",
+    "hexo-images": "^1.0.1"
   },
   "config": {
     "commitizen": {
