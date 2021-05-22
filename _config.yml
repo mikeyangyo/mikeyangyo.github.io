@@ -103,6 +103,8 @@ theme_config:
   darkmode: true
   menu:
     home: / || fa fa-home
+    tags: /tags/ || fa fa-tags
+    categories: /categories/ || fa fa-th
     about: /about/ || fa fa-user
   social:
     GitHub: https://github.com/mikeyangyo || fab fa-github
