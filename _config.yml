@@ -120,6 +120,10 @@ theme_config:
   github_banner:
     enable: true
     permalink: https://github.com/mikeyangyo
+  disqus:
+    enable: true
+    shortname: mikeyangyo
+    count: true
   pace:
     enable: true
 
