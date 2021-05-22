@@ -1,13 +1,15 @@
 ---
-title: Hexo, devcontainer, Github Page 架設教學
+title: 'Hexo, Github Page 架設教學'
 tags:
-    - Hexo
-    - Blog
-    - devcontainer
-    - docker
+  - Hexo
+  - Blog
+  - devcontainer
+  - docker
 categories:
-    - Technical
+  - Technical
+date: 2021-05-22 21:54:12
 ---
+
 ###### 須具備知識: `Markdown`, `NPM`, `Git`, `Travis CI`
 
 ---
@@ -15,6 +17,8 @@ categories:
 Hi 大家好，我是 Mike。
 我喜歡在閒暇時間的時間研究新奇的東西，所以想啟個 blog 紀錄一下研究的東西，讓自己之後可以複習相關內容。所以我也研究了幾個常見的部落格框架，例如 [JekyII](https://jekyllrb.com/)、[Hugo](https://gohugo.io/)、[Hexo](https://hexo.io/)。
 而最終我選擇了 **Hexo** 作為我部落格生成靜態檔的工具，並利用 github page 的免費資源來部屬，並利用 Travis CI 做 CD。
+
+<!-- more -->
 
 ## 各單元介紹
 
@@ -51,9 +55,11 @@ Travis CI 是一個用來做 CI / CD 建置的工具。
 
 接下來就廢話少說，進入正題。
 
-### [Optional] devcontainer 設定
+### devcontainer 設定
 
-> 如果你不介意自己安裝 npm 和 hexo 套件的話，可以省略這段!!
+{% note info %}
+如果你不介意自己安裝 npm 和 hexo 套件的話，可以省略這段!!
+{% endnote %}
 
 devcontainer 主要是基於 `.devcontainer/devcontainer.json` 這個檔案設定和 vscode 相關的設定，在安裝 [Remote-Container extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) 後，可以開啟 Command Palette(`Ctrl/Cmd + Shift + P`) 後輸入 `Remote-Containers: Add Development Container Configuration Files` 透過互動式介面生成 `devcontainer.json`，或是直接參考我下面的範例。
 
@@ -119,141 +125,161 @@ RUN su node -c "npm install -g hexo-cli"
 
 ### Hexo 設定
 
-如果你沒有使用 devcontainer 的話，首先需要做的事情是先安裝 hexo 的互動化工具 command。
+{% note info %}
+如果你有設定 devcontainer，請跳到步驟 2
+{% endnote %}
 
-```bash
-npm install -g hexo-cli
-```
+1. 安裝 hexo 的互動化工具 command
 
-跑完這個 command 後，會在全域的 npm 安裝 hexo 工具，之後不管是要生成新的文章，或是跑一個測試網站，甚至之後的部屬都需要和這個套件互動，因此這個套件必裝不可!
+    ```bash
+    npm install -g hexo-cli
+    ```
 
-接著，執行以下指令，請 hexo 幫我們初始化整個資料夾
+    跑完這個 command 後，會在全域的 npm 安裝 hexo 工具，之後不管是要生成新的文章，或是跑一個測試網站，甚至之後的部屬都需要和這個套件互動，因此這個套件必裝不可!
 
-```bash
-cd <project_folder>
-hexo init .
-```
+2. 執行以下指令，請 hexo 幫我們初始化整個資料夾
 
-執行結束後，會在此目錄生成以下結構的專案。
+    ```bash
+    cd <project_folder>
+    hexo init .
+    ```
 
-```text
-.
-├── _config.yml
-├── package.json
-├── scaffolds
-├── source
-|   ├── _drafts
-|   └── _posts
-└── themes
-```
+    執行結束後，會在此目錄生成以下結構的專案。
 
-檔案結構說明如下:
+    ```text
+    .
+    ├── _config.yml
+    ├── package.json
+    ├── scaffolds
+    ├── source
+    |   ├── _drafts
+    |   └── _posts
+    └── themes
+    ```
 
-1. `_config.yml`: 設定 hexo 的地方
-2. `package.json`: npm 專案的資訊檔，**原則上不需改動**
-3. `scaffolds`: 裡面定義了範例檔，hexo 將利用這些檔案生成我們要的貼文、草稿、頁面
-4. `source/_drafts`: 裡面為每篇**草稿**存放的地方
-5. `source/_posts`: 裡面為每篇**文章**存放的地方
-6. `themes`: 裡面儲存了各式可套用的主題
+    檔案結構說明如下:
+
+    - `_config.yml`: 設定 hexo 的地方
+    - `package.json`: npm 專案的資訊檔，**原則上不需改動**
+    - `scaffolds`: 裡面定義了範例檔，hexo 將利用這些檔案生成我們要的貼文、草稿、頁面
+    - `source/_drafts`: 裡面為每篇**草稿**存放的地方
+    - `source/_posts`: 裡面為每篇**文章**存放的地方
+    - `themes`: 裡面儲存了各式可套用的主題
 
 ### 主題套用
 
-主題可從 [官方主題](https://hexo.io/themes/) 中挑選。而我選擇的是 [NexT](https://theme-next.js.org/) 主題，以下將針對 NexT 主題套用做教學。
+{% note info %}
+主題可從 [官方主題](https://hexo.io/themes/) 中挑選
+{% endnote %}
 
-首先先執行以下指令安裝主題到專案中
+以下將針對 [NexT](https://theme-next.js.org/) 主題套用做教學。
 
-```bash
-git submodule add https://github.com/theme-next/hexo-theme-next themes/next
-```
+1. 執行以下指令安裝主題到專案中
 
-至於為什麼是用 submodule 而不是按照官方建議直接 clone 的原因是直接 clone 的話，之後部屬時會無法正確生成對應的靜態檔。
+    ```bash
+    git submodule add https://github.com/theme-next/hexo-theme-next themes/next
+    ```
 
-再來修改設定檔中的 `theme` 屬性來套用新主題。
+    至於為什麼是用 submodule 的原因是如果直接 clone 的話，之後**部屬時會無法正確生成對應的靜態檔**。
 
-```yml
-# _config.yml
-...
-theme: next
-...
-```
+2. 修改設定檔中的 `theme` 屬性來套用新主題。
 
-接下來如果需要修改 NexT 的設定的話，也要注意不要直接修改 `themes/next/_config.yml` 而是去修改 `_config.yml` 中的 `theme_config` 屬性，直接把你要修改的屬性結構複製過來修改即可，如下所示。
+    ```yml
+    # _config.yml
+    ...
+    theme: next
+    ...
+    ```
 
-```yml
-# _config.yml
-...
-theme: next
-theme_config:
-    # 修改編排方式
-    scheme: Mist
-    # 開啟黑暗模式
-    darkmode: true
-    # 要開啟快捷 link，並設定路徑和 icon
-    menu:
-        home: / || fa fa-home
-        about: /about/ || fa fa-user
-...
-```
+    {% note warning %}
+
+    ### 如果需要修改 NexT 的設定的話，請不要直接修改 `themes/next/_config.yml`
+
+    請去修改 `_config.yml` 中的 `theme_config` 屬性，直接把你要修改的屬性結構複製過來修改即可，如下所示。
+
+    ```yml
+    # _config.yml
+    ...
+    theme: next
+    theme_config:
+        # 修改編排方式
+        scheme: Mist
+        # 開啟黑暗模式
+        darkmode: true
+        # 要開啟快捷 link，並設定路徑和 icon
+        menu:
+            home: / || fa fa-home
+            about: /about/ || fa fa-user
+    ...
+    ```
+
+    {% endnote %}
 
 ### 部屬到 Github Page
 
-首先我們要做的是到你的 github 創立一個名為 `<username>.github.io` 的 repository。
+1. 到你的 Github 創立一個名為 `<username>.github.io` 的 repository
 
-![創立 repo]()
+2. 到 [Travis CI 官網](https://travis-ci.com/) 用 Github 帳號登入，登入後新增剛剛創立的 repo，讓 Travis CI 認得它
 
-接著到 [Travis CI 官網](https://travis-ci.com/) 用 Github 帳號登入，登入後新增剛剛創立的 repo，讓他 Travis CI 認得它。
+3. 回到 Github [創建 token](https://github.com/settings/tokens)
+    {% note info %}
 
-![新增 Travis CI 支援]()
+    ### Token 的用途是取代掉帳號密碼
 
-接著回到 Github [創建 token](https://github.com/settings/tokens)，當 Github 看到這個 token 會認為是你在進行操作，藉此取代帳號密碼。新增完成後，複製 token 資料。
+    當 Github 看到這個 token 會認為是你在進行操作，如此一來便不須提供帳號密碼給 Travis CI 了
 
-複製完後切換到 Travis CI 中的 `<username>.github.io` 專案，並在設定頁面中的 Environment Variables 新增一個名為 GH_TOKEN 的 variable，並在 Value 欄位中貼上剛剛複製的內容。
+    {% endnote %}
+    選擇 `public_repo` 權限，生成 token 後，複製 token 資料
 
-最後在我們的專案中新增一個名為 `.travis.yml` 的檔案，此檔案是用來針對 Travis CI 進行設定，讓他們按照我們的指示做對應的事情，範例如下。
+4. 回到 Travis CI 中的 `<username>.github.io` 專案，並在設定頁面中的 Environment Variables 新增一個名為 `GH_TOKEN` 的 variable，並在 Value 欄位中貼上剛剛複製的內容
 
-```yml
-# use node js language to build
-language: node_js
-# use linux as base os
-os: linux
-# use Ubuntu Xenial
-dist: xenial
-# define node js version
-node_js:
-    - 16
-# cache dependencies
-cache: npm
-# run build only on main branch was changed
-branches:
-    only:
-        - main
-script:
-    # generate static HTML files
-    - hexo generate
-deploy:
-    # use github page deploy process
-    provider: pages
-    # Does git push over HTTPS
-    strategy: git
-    # keep builded pages
-    skip_cleanup: true
-    # token created from github,
-    # and read from environment variable defined in Travis CI config, named GH_TOKEN
-    token: $GH_TOKEN
-    # keep old build/files from previous deployments
-    keep_history: true
-    # define deploy provider
-    on:
-        branch: main
-    # define which dir would be pushed to github as static website
-    local_dir: public
-```
+5. 在專案中新增一個名為 `.travis.yml` 的檔案，此檔案是用來針對 Travis CI 進行設定，讓他們按照我們的指示做對應的事情
 
-依照這樣設定完後，原則上只要 `main` branch 有變更，就會自動觸發 Travis CI 進行網站更新，而 Travis CI 做完後會把靜態網站檔推到 `gh-pages` branch
+    ```yml
+    # use node js language to build
+    language: node_js
+    # use linux as base os
+    os: linux
+    # use Ubuntu Xenial
+    dist: xenial
+    # define node js version
+    node_js:
+        - 16
+    # cache dependencies
+    cache: npm
+    # run build only on main branch was changed
+    branches:
+        only:
+            - main
+    script:
+        # generate static HTML files
+        - hexo generate
+    deploy:
+        # use github page deploy process
+        provider: pages
+        # Does git push over HTTPS
+        strategy: git
+        # keep builded pages
+        skip_cleanup: true
+        # token created from github,
+        # and read from environment variable defined in Travis CI config, named GH_TOKEN
+        token: $GH_TOKEN
+        # keep old build/files from previous deployments
+        keep_history: true
+        # define deploy provider
+        on:
+            branch: main
+        # define which dir would be pushed to github as static website
+        local_dir: public
+    ```
 
-最後我們需要把 Github Page 的靜態網站來源 branch 改成 `gh-pages`。首先，點選 Github `<username>.github.io` 的設定 > Pages > Source，選擇 branch 選單中的 `gh-pages` 並儲存，如此一來便完成所有設定了。
+    依照這樣設定完後，原則上只要 `main` branch 有變更，就會自動觸發 Travis CI 進行網站更新，而 Travis CI 做完後會把靜態網站檔推到 `gh-pages` branch
 
-接著 access `https://<username>.github.io/` 便可看到你的內容囉。
+6. 把 Github Page 的靜態網站來源 branch 改成 `gh-pages`
+   1. 點選 Github `<username>.github.io` 的設定 > Pages > Source
+   2. 選擇 branch 選單中的 `gh-pages` 並儲存，如此一來便完成所有設定了
+
+7. 造訪 `https://<username>.github.io/` 便可看到你的內容囉。
 
 ## 結語
 
